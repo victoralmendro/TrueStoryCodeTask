@@ -1,0 +1,6 @@
+@TrueStoryCodeTask_HostAddress = http://localhost:5050
+
+GET {{TrueStoryCodeTask_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
