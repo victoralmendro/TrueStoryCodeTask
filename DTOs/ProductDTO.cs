@@ -1,24 +1,15 @@
-﻿using System.Text.Json.Serialization;
-
-namespace TrueStoryCodeTask.DTOs
+﻿namespace TrueStoryCodeTask.DTOs
 {
     public class ProductDTO
     {
-        [JsonPropertyName("id")]
         public int Id { get; set; }
         
-        [JsonPropertyName("name")]
-        public int Name { get; set; }
+        public string Name { get; set; }
         
-        [JsonPropertyName("data")]
-        public ProductData Data { get; set; }
+        public ProductData? Data { get; set; }
     }
     public class ProductData
     {
-        [JsonPropertyName("color")]
-        public string Color { get; set; }
-        
-        [JsonPropertyName("capacity")]
-        public string Capacity { get; set; }
+        public decimal Price { get; set; }
     }
 }
