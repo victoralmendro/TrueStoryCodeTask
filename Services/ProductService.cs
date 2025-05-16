@@ -1,5 +1,6 @@
 ﻿using TrueStoryCodeTask.DTOs;
 using TrueStoryCodeTask.DTOs.Filters;
+using TrueStoryCodeTask.DTOs.MockApi;
 using TrueStoryCodeTask.HttpClients;
 
 namespace TrueStoryCodeTask.Services
@@ -7,17 +8,51 @@ namespace TrueStoryCodeTask.Services
     public class ProductService
     {
         private readonly MockApiClient _mockApiClient;
+        private readonly MockIdStoreService _mockIdStoreService;
 
-        public ProductService(MockApiClient mockApiClient)
+        public ProductService(MockApiClient mockApiClient, MockIdStoreService mockIdStoreService)
         {
             _mockApiClient = mockApiClient;
+            _mockIdStoreService = mockIdStoreService;
+        }
+
+        public async Task<ProductDTO> CreateAsync(ProductDTO product)
+        {
+            var created = await _mockApiClient.CreateAsync(new MockObjectDTO
+            {
+                Name = product.Name,
+                Data = new MockObjectData
+                { 
+                    ForTrueStory = true,
+                    Price = product.Data == null ? 0 : product.Data.Price
+                }
+            });
+
+            _mockIdStoreService.Add(created.Id);
+
+            ProductDataDTO? dataObj = null;
+            if (created.Data != null) {
+                dataObj = new ProductDataDTO
+                {
+                    Price = created.Data.Price
+                };
+            }
+
+            return new ProductDTO
+            {
+                Id = created.Id,
+                Name = created.Name,
+                Data = dataObj,
+                CreatedAt = created.CreatedAt
+            };
         }
 
         public async Task<PagedResult<ProductDTO>> GetAllAsync(int page, int pageSize, ProductFilter? filter)
         {
-            var all = await _mockApiClient.GetAllAsync();
+            var ids = _mockIdStoreService.GetAll();
+            var all = await _mockApiClient.GetAllAsync(ids.ToList());
 
-            var filtered = all.Where(p => p.Data?.ForTrueStory == true);
+            var filtered = all;
 
             if (filter != null)
             {
@@ -31,7 +66,7 @@ namespace TrueStoryCodeTask.Services
             {
                 Id = p.Id,
                 Name = p.Name,
-                Data = p.Data == null ? null : new ProductData
+                Data = new ProductDataDTO
                 {
                     Price = p.Data.Price
                 }

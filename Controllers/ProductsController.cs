@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net;
+using TrueStoryCodeTask.DTOs;
 using TrueStoryCodeTask.DTOs.Filters;
+using TrueStoryCodeTask.DTOs.Requests;
+using TrueStoryCodeTask.DTOs.Response;
 using TrueStoryCodeTask.Errors;
 using TrueStoryCodeTask.Services;
 
@@ -28,14 +32,38 @@ namespace TrueStoryCodeTask.Controllers
                 throw new InvalidRequestParamsException(HttpStatusCode.BadRequest, "Page and pageSize must be positive integers.");
             }
 
-            return Ok(
-                await _productService.GetAllAsync(page, pageSize, filter)
-            );
+            var all = await _productService.GetAllAsync(page, pageSize, filter);
+
+            var result = new PagedResult<ProductGetResponse>
+            {
+                Items = all.Items.Select(p => new ProductGetResponse
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Data = new ProductDataGetResponse { 
+                        Price = p.Data.Price
+                    }
+                }).ToList(),
+                TotalCount = all.TotalCount,
+                Page = all.Page,
+                PageSize = all.PageSize
+            };
+
+            return Ok(result);
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] ProductPostRequest product)
         {
+            var created = await _productService.CreateAsync(new ProductDTO
+            {
+                Name = product.Name,
+                Data = new ProductDataDTO { 
+                    Price = product.Data.Price,
+                }
+            });
+
+            return Ok(created);
         }
 
         [HttpDelete("{id}")]

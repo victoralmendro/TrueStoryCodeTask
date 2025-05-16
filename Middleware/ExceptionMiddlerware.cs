@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using TrueStoryCodeTask.DTOs;
 using TrueStoryCodeTask.Errors;
+using TrueStoryCodeTask.Services;
 
 namespace TrueStoryCodeTask.Middleware
 {
@@ -30,7 +31,7 @@ namespace TrueStoryCodeTask.Middleware
 
                 await context.Response.WriteAsJsonAsync(new BaseErrorResponse
                 {
-                    Code = "INVALID_REQUEST_PARAMS",
+                    Code = ErrorCodes.InvalidRequestParameters,
                     Message = ex.Message,
                     TraceId = context.TraceIdentifier
                 });
@@ -44,8 +45,7 @@ namespace TrueStoryCodeTask.Middleware
 
                 await context.Response.WriteAsJsonAsync(new BaseErrorResponse
                 {
-                    Code = "INTEGRATION_ERROR",
-                    Message = "Integration error occurred",
+                    Code = ErrorCodes.IntegrationError,
                     TraceId = context.TraceIdentifier
                 });
             }
@@ -58,8 +58,7 @@ namespace TrueStoryCodeTask.Middleware
 
                 await context.Response.WriteAsJsonAsync(new BaseErrorResponse
                 {
-                    Code = "UNEXPECTED_ERROR",
-                    Message = "An unexpected error occurred",
+                    Code = ErrorCodes.UnexpectedError,
                     TraceId = context.TraceIdentifier
                 });
             }
