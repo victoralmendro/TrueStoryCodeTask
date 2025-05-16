@@ -1,13 +1,59 @@
-﻿This is an API built around the mock API called [REST API - Ready to use](https://restful-api.dev/).
+﻿# Product Proxy API (Based on RESTful Mock API)
 
-This project extends that API functionality to only deal with it's own created objects, that in this case are products.
+This is a lightweight .NET 8 Web API that extends the functionality of the public mock API:  
+👉 [REST API - Ready to use](https://restful-api.dev/)
 
-The mock API accepts custom data, but we need to store it somewhere. To keep the project simple, I chose to not use a database, so all of it's created objects ID's are stored in memory.
+## 📌 Purpose
 
-At each restart of this API, all the created product ID's will be wiped, requiring re-registration of the products.
+This project acts as a proxy layer that interacts with the external mock API but only manages **products created through this proxy**. It ensures isolation by keeping track of product IDs created by this system.
 
-Dependencies:
-- [Visual Sudio 2022](https://visualstudio.microsoft.com/pt-br/vs/)
-- [.NET Framework 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+To keep the solution simple and dependency-free, product IDs are stored **in memory**. No database is used.
 
-Further API usage instruction can be found on the generated Swagger Docs in development mode.
+⚠️ **Note**: All created product IDs are lost on application restart, requiring re-creation.
+
+---
+
+## ⚙️ Tech Stack & Requirements
+
+- [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+- [Visual Studio 2022](https://visualstudio.microsoft.com/) or Visual Studio Code
+
+---
+
+## 🧪 API Documentation
+
+Swagger UI is available in development mode:
+👉 [Open Swagger UI](https://localhost:7134/swagger)
+
+---
+
+## 🚀 Getting Started
+
+1. Clone the repository:
+```bash
+git clone https://github.com/victoralmendro/TrueStoryCodeTask.git
+cd your-repo-name
+dotnet run
+```
+2. Run the project:
+```bash
+dotnet run
+```
+3. Open your browser and access the Swagger UI:
+```bash
+https://localhost:7134/swagger
+```
+
+---
+
+## 🔍 Features
+- Proxy for [https://restful-api.dev](https://restful-api.dev)
+- In-memory tracking of created product IDs
+- Product isolation: only returns and deletes products created through this API
+- Add, Retrieve and Delete products
+
+## 📈 Possible Improvements
+- Persist product IDs using Redis or local storage
+- Save error logs to a file
+- Secure endpoints with API key authentication
+- Add unit and integration test coverage
