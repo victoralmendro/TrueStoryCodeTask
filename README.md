@@ -33,11 +33,10 @@ Swagger UI is available in development mode:
 ```bash
 git clone https://github.com/victoralmendro/TrueStoryCodeTask.git
 cd your-repo-name
-dotnet run
 ```
 2. Run the project:
 ```bash
-dotnet run
+dotnet run --launch-profile "https"
 ```
 3. Open your browser and access the Swagger UI:
 ```bash
