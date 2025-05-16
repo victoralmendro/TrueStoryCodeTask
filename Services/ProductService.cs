@@ -1,4 +1,5 @@
-﻿using TrueStoryCodeTask.DTOs;
+﻿using System.Runtime.CompilerServices;
+using TrueStoryCodeTask.DTOs;
 using TrueStoryCodeTask.DTOs.Filters;
 using TrueStoryCodeTask.DTOs.MockApi;
 using TrueStoryCodeTask.HttpClients;
@@ -14,6 +15,13 @@ namespace TrueStoryCodeTask.Services
         {
             _mockApiClient = mockApiClient;
             _mockIdStoreService = mockIdStoreService;
+        }
+
+        public async Task DeleteAsync(string productId)
+        {
+            await _mockApiClient.DeleteAsync(productId);
+
+            _mockIdStoreService.Remove(productId);
         }
 
         public async Task<ProductDTO> CreateAsync(ProductDTO product)

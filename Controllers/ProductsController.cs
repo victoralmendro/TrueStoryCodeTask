@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net;
 using TrueStoryCodeTask.DTOs;
 using TrueStoryCodeTask.DTOs.Filters;
@@ -66,9 +65,12 @@ namespace TrueStoryCodeTask.Controllers
             return Ok(created);
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{productId}")]
+        public async Task<IActionResult> Delete(string productId)
         {
+            await _productService.DeleteAsync(productId);
+
+            return Ok();
         }
     }
 }
