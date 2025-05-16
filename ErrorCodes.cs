@@ -1,4 +1,4 @@
-﻿namespace TrueStoryCodeTask.Services
+﻿namespace TrueStoryCodeTask
 {
     public static class ErrorCodes
     {
